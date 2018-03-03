@@ -1,0 +1,30 @@
+.header {
+    background: #5682a3;
+    height: 48px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+}
+
+.header__avatar {
+    width: auto;
+    height: 100%;
+    border-radius: 50%;
+    margin-right: 8px;
+    margin-left: 16px;
+}
+
+.header__name {
+    font-size: 16px;
+}
+
+.header__logout {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-left: 1px solid #fff;
+}
