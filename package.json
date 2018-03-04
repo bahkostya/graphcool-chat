@@ -15,6 +15,7 @@
         "react-dom": "^16.2.0",
         "react-router-dom": "^4.2.2",
         "react-scripts-ts-temp": "^2.13.0",
+        "react-textarea-autosize": "^6.0.0",
         "recompose": "^0.26.0",
         "subscriptions-transport-ws": "^0.9.6"
     },

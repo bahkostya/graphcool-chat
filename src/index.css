@@ -3,7 +3,16 @@
     font: 13px/18px Tahoma, sans-serif, Arial, Helvetica;
 }
 
+html,
+body {
+}
+
 body {
     font-family: sans-serif;
     background-color: #e7ebf0;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    height: 100%;
+    overflow: hidden;
 }
