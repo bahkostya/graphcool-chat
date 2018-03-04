@@ -1,0 +1,12 @@
+{
+  "name": "graphcool-chat-server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "graphcool-lib": "^0.1.0",
+    "graphql-request": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.44"
+  }
+}
