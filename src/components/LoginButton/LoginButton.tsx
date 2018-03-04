@@ -6,6 +6,7 @@ interface Props {
     imageUrl: string;
     text: string;
     color: string;
+    onButtonClick(): void;
 }
 
 class LoginButton extends React.Component<Props> {
@@ -20,6 +21,7 @@ class LoginButton extends React.Component<Props> {
                     backgroundColor: color,
                     backgroundImage: `url(${imageUrl})`,
                 }}
+                onClick={this.props.onButtonClick}
             >
                 {text}
             </button>
