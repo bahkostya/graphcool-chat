@@ -79,7 +79,7 @@ class LoginPage extends React.Component<Props> {
             return null;
         }
 
-        if (checkIfLoggedIn(this.props.data)) {
+        if (checkIfLoggedIn(this.props.data.loggedInUser)) {
             return <Redirect to="/" />;
         }
 

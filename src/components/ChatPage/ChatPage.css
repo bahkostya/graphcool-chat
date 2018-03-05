@@ -15,31 +15,3 @@
     flex-direction: column;
     justify-content: space-between;
 }
-
-.input-controls {
-    display: flex;
-    align-items: flex-start;
-}
-
-.input-controls__text-area {
-    flex: 1 1 auto;
-    height: 100%;
-    margin: 8px 0 8px;
-    border-radius: 4px;
-    padding: 8px;
-    min-height: 36px;
-}
-
-.input-controls__button {
-    width: 36px;
-    height: 36px;
-    padding: 4px;
-    margin: 8px 0 8px 8px;
-    background-color: #5682a3;
-    border: none;
-    border-radius: 50%;
-    background-image: url('../../assets/send-icon.svg');
-    background-size: 24px 24px;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-}

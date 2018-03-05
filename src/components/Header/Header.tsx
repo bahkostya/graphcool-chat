@@ -1,31 +1,22 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
-import { graphql, QueryProps } from 'react-apollo';
-import { compose } from 'recompose';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import loggedInUserQuery from '../../graphql/loggedInUserQuery.graphql';
-import { LoggedInUserQuery } from '../../types/gql';
-import checkIfLoggedIn from '../../utils/checkIfLoggedIn';
 import './Header.css';
 
-interface MappedProps {
-    data: QueryProps & LoggedInUserQuery;
+interface Props {
+    id: string;
+    photo: string | null;
+    firstName: string | null;
 }
 
-type Props = MappedProps & RouteComponentProps<{}>;
-
-class Header extends React.Component<Props> {
+class Header extends React.Component<Props & RouteComponentProps<{}>> {
     handleLogout = () => {
         localStorage.removeItem('graphcoolToken');
         this.props.history.push('/login');
     };
 
     render() {
-        if (!checkIfLoggedIn(this.props.data)) {
-            return <Redirect to="/login" />;
-        }
-
-        const { firstName, photo } = this.props.data.loggedInUser!;
+        const { firstName, photo } = this.props;
 
         return (
             <div className="header">
@@ -39,4 +30,4 @@ class Header extends React.Component<Props> {
     }
 }
 
-export default compose(graphql(loggedInUserQuery, { options: { fetchPolicy: 'network-only' } }), withRouter)(Header);
+export default withRouter(Header);

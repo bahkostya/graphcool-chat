@@ -1,5 +1,5 @@
-import { LoggedInUserQuery } from '../types/gql';
+import { LoggedInUserPayload } from '../types/api';
 
-export default function checkIfLoggedIn(data: LoggedInUserQuery) {
-    return data.loggedInUser && data.loggedInUser.id && data.loggedInUser.id !== '';
+export default function checkIfLoggedIn(loggedInUser: LoggedInUserPayload | null) {
+    return loggedInUser && loggedInUser.id && loggedInUser.id !== '';
 }

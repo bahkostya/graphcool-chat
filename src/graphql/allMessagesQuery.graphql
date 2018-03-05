@@ -1,0 +1,12 @@
+query AllMessages {
+    allMessages {
+        id
+        createdAt
+        text
+        author {
+            id
+            firstName
+            photo
+        }
+    }
+}

@@ -6,6 +6,16 @@ type User @model {
     updatedAt: DateTime! # read-only (managed by Graphcool)
     facebookUserId: String @isUnique
     email: String # optional, because it's obtained from Facebook API
-    firstName: String
-    photo: String
+    firstName: String!
+    photo: String!
+
+    messages: [Message!]! @relation(name: "UserMessages")
+}
+
+type Message @model {
+    id: ID! @isUnique
+    createdAt: DateTime!
+    text: String!
+
+    author: User! @relation(name: "UserMessages")
 }
