@@ -29,10 +29,10 @@ export interface User extends Node {
     createdAt: DateTime;
     email?: string | null;
     facebookUserId?: string | null;
-    firstName?: string | null;
+    firstName: string;
     id: string;
     messages: Message[];
-    photo?: string | null;
+    photo: string;
     updatedAt: DateTime;
     _messagesMeta: _QueryMeta /* Meta information about the query. */;
 }
@@ -99,9 +99,9 @@ export interface UserPreviousValues {
     createdAt: DateTime;
     email?: string | null;
     facebookUserId?: string | null;
-    firstName?: string | null;
+    firstName: string;
     id: string;
-    photo?: string | null;
+    photo: string;
     updatedAt: DateTime;
 }
 
@@ -244,8 +244,8 @@ export interface UserFilter {
 export interface MessageauthorUser {
     email?: string | null;
     facebookUserId?: string | null;
-    firstName?: string | null;
-    photo?: string | null;
+    firstName: string;
+    photo: string;
     messagesIds: string[];
     messages: UsermessagesMessage[];
 }
@@ -280,8 +280,8 @@ export interface UpdateUser {
 export interface CreateUser {
     email?: string | null;
     facebookUserId?: string | null;
-    firstName?: string | null;
-    photo?: string | null;
+    firstName: string;
+    photo: string;
     messagesIds: string[];
     messages: UsermessagesMessage[];
 }
@@ -549,8 +549,8 @@ export interface AddToUserMessagesMutationArgs {
 export interface CreateUserMutationArgs {
     email?: string | null;
     facebookUserId?: string | null;
-    firstName?: string | null;
-    photo?: string | null;
+    firstName: string;
+    photo: string;
     messagesIds: string[];
     messages: UsermessagesMessage[];
 }

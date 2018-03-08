@@ -57,7 +57,7 @@ class ChatPage extends React.Component<Props> {
                             ))}
                         <div ref={this.initRef} />
                     </div>
-                    <InputControls onHeightChange={() => this.endRef.scrollIntoView()} />
+                    <InputControls userId={id} onHeightChange={() => this.endRef.scrollIntoView()} />
                 </div>
             </div>
         );

@@ -1,5 +1,12 @@
 mutation CreateMessage($text: String!, $authorId: ID) {
     createMessage(text: $text, authorId: $authorId) {
         id
+        text
+        createdAt
+        author {
+            id
+            photo
+            firstName
+        }
     }
 }
