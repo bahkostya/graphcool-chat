@@ -51,3 +51,18 @@ export interface LoggedInUserQuery {
         firstName: string | null;
     } | null;
 }
+
+export interface MessageSubscription {
+    Message: {
+        node: {
+            id: string;
+            createdAt: string;
+            text: string;
+            author: {
+                id: string;
+                firstName: string;
+                photo: string;
+            };
+        } | null;
+    } | null;
+}

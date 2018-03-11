@@ -8,13 +8,15 @@ import InputControls from '../InputControls/InputControls';
 import Message from '../Message/Message';
 import loggedInUserQuery from '../../graphql/loggedInUserQuery.graphql';
 import allMessagesQuery from '../../graphql/allMessagesQuery.graphql';
-import { LoggedInUserQuery, AllMessagesQuery } from '../../types/gql';
+import newMessage from '../../graphql/newMessage.graphql';
+import { LoggedInUserQuery, AllMessagesQuery, MessageSubscription } from '../../types/gql';
 import checkIfLoggedIn from '../../utils/checkIfLoggedIn';
 import './ChatPage.css';
 
 interface MappedProps {
     user: QueryProps & LoggedInUserQuery;
     messages: QueryProps & AllMessagesQuery;
+    subscribeToNewMessages(): void;
 }
 
 type Props = MappedProps & RouteComponentProps<{}>;
@@ -22,9 +24,15 @@ type Props = MappedProps & RouteComponentProps<{}>;
 class ChatPage extends React.Component<Props> {
     endRef: HTMLDivElement;
 
+    componentDidMount() {
+        this.props.subscribeToNewMessages();
+    }
+
     initRef = (el: HTMLDivElement) => (this.endRef = el);
 
     render() {
+        console.log(this.props);
+
         const { messages, user } = this.props;
 
         if (user.loading) {
@@ -34,8 +42,6 @@ class ChatPage extends React.Component<Props> {
         if (!checkIfLoggedIn(user.loggedInUser)) {
             return <Redirect to="/login" />;
         }
-
-        console.log(this.props);
 
         const { id, photo, firstName } = user.loggedInUser!;
 
@@ -66,6 +72,35 @@ class ChatPage extends React.Component<Props> {
 
 export default compose(
     graphql(loggedInUserQuery, { options: { fetchPolicy: 'network-only' }, name: 'user' }),
-    graphql(allMessagesQuery, { options: { fetchPolicy: 'network-only' }, name: 'messages' }),
+    graphql(allMessagesQuery, {
+        options: { fetchPolicy: 'network-only' },
+        name: 'messages',
+        props: props => {
+            const { messages, user } = props as Partial<MappedProps>;
+            if (!messages) {
+                return props;
+            }
+
+            return {
+                ...props,
+                subscribeToNewMessages: () => {
+                    return messages.subscribeToMore({
+                        document: newMessage,
+                        updateQuery: (prev: AllMessagesQuery, { subscriptionData: { data } }) => {
+                            console.log(prev, data);
+                            if (!data) {
+                                return prev;
+                            }
+                            const subscriptionData = data as MessageSubscription;
+
+                            return {
+                                allMessages: [...prev.allMessages, subscriptionData.Message!.node],
+                            };
+                        },
+                    });
+                },
+            };
+        },
+    }),
     withRouter
 )(ChatPage);
