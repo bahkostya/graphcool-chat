@@ -1,12 +1,13 @@
 import * as React from 'react';
 
+import formatDate from '../../utils/formatDate';
 import './Message.css';
 
 interface Props {
     text: string;
     authorName: string;
     authorAvatarUrl: string | null;
-    date: string;
+    createdAt: string;
     isLoggedInUser?: boolean;
 }
 
@@ -14,9 +15,10 @@ const userColors = ['#8365ab', '#539e4f', '#ae9661', '#4979a3', '#b7635d', '#b35
 
 class Message extends React.Component<Props> {
     render() {
-        const { text, authorAvatarUrl, authorName, date, isLoggedInUser = false } = this.props;
+        const { text, authorAvatarUrl, authorName, createdAt, isLoggedInUser = false } = this.props;
         const randomUserColorIndex = Math.ceil(Math.random() * 9);
         const randomUserColor = userColors[randomUserColorIndex];
+        const { date, time } = formatDate(createdAt);
 
         return (
             <div className={`message${isLoggedInUser ? ' is-loggedin' : ''}`}>
@@ -33,7 +35,11 @@ class Message extends React.Component<Props> {
                     </div>
                     <div className="message__text">{text}</div>
                 </div>
-                <div className="message__date">{date}</div>
+                <div className="message__date">
+                    {date}
+                    <br />
+                    {time}
+                </div>
             </div>
         );
     }

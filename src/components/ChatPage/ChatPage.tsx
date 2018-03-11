@@ -28,9 +28,26 @@ class ChatPage extends React.Component<Props> {
         this.props.subscribeToNewMessages();
     }
 
+    componentDidUpdate(prevProps: Props) {
+        if (
+            prevProps.messages.allMessages &&
+            prevProps.messages.allMessages.length !== this.props.messages.allMessages.length
+        ) {
+            const { messages, user } = this.props;
+            const lastMessage = messages.allMessages[messages.allMessages.length - 1];
+
+            if (user.loggedInUser && lastMessage.author.id === user.loggedInUser.id) {
+                this.endRef.scrollIntoView();
+            }
+        }
+    }
+
     initRef = (el: HTMLDivElement) => (this.endRef = el);
 
     render() {
+        if (this.endRef) {
+            this.endRef.scrollIntoView();
+        }
         console.log(this.props);
 
         const { messages, user } = this.props;
@@ -56,7 +73,7 @@ class ChatPage extends React.Component<Props> {
                                     text={message.text}
                                     authorName={message.author.firstName}
                                     authorAvatarUrl={message.author.photo}
-                                    date={new Date(message.createdAt).toLocaleTimeString('en-GB').slice(0, 5)}
+                                    createdAt={message.createdAt}
                                     key={message.id}
                                     isLoggedInUser={message.author.id === id}
                                 />

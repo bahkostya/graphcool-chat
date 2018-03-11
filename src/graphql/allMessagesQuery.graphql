@@ -1,5 +1,5 @@
 query AllMessages {
-    allMessages {
+    allMessages(orderBy: createdAt_ASC) {
         id
         createdAt
         text
