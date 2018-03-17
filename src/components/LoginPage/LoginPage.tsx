@@ -68,8 +68,6 @@ class LoginPage extends React.Component<Props> {
             const graphcoolToken = graphcoolResponse.data.authenticateUser.token;
             localStorage.setItem('graphcoolToken', graphcoolToken);
             this.props.history.push('/');
-        } else {
-            console.warn(`User did not authorize the Facebook application.`);
         }
     };
 

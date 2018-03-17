@@ -45,11 +45,6 @@ class ChatPage extends React.Component<Props> {
     initRef = (el: HTMLDivElement) => (this.endRef = el);
 
     render() {
-        if (this.endRef) {
-            this.endRef.scrollIntoView();
-        }
-        console.log(this.props);
-
         const { messages, user } = this.props;
 
         if (user.loading) {
@@ -104,7 +99,6 @@ export default compose(
                     return messages.subscribeToMore({
                         document: newMessage,
                         updateQuery: (prev: AllMessagesQuery, { subscriptionData: { data } }) => {
-                            console.log(prev, data);
                             if (!data) {
                                 return prev;
                             }
