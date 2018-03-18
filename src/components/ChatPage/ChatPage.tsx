@@ -21,8 +21,16 @@ interface MappedProps {
 
 type Props = MappedProps & RouteComponentProps<{}>;
 
-class ChatPage extends React.Component<Props> {
+interface State {
+    textAreaHeight: number;
+}
+
+class ChatPage extends React.Component<Props, State> {
     endRef: HTMLDivElement;
+
+    state: State = {
+        textAreaHeight: 32,
+    };
 
     componentDidMount() {
         this.props.subscribeToNewMessages();
@@ -36,11 +44,27 @@ class ChatPage extends React.Component<Props> {
             const { messages, user } = this.props;
             const lastMessage = messages.allMessages[messages.allMessages.length - 1];
 
-            if (user.loggedInUser && lastMessage.author.id === user.loggedInUser.id) {
+            if (
+                (user.loggedInUser && lastMessage.author.id === user.loggedInUser.id) ||
+                window.innerHeight + window.scrollY >= this.endRef.offsetTop - 50
+            ) {
                 this.endRef.scrollIntoView();
+
+                return;
             }
         }
     }
+
+    handleHeightChange = (height: number) => {
+        this.setState(
+            {
+                textAreaHeight: height + 20,
+            },
+            () => {
+                this.endRef.scrollIntoView();
+            }
+        );
+    };
 
     initRef = (el: HTMLDivElement) => (this.endRef = el);
 
@@ -60,22 +84,20 @@ class ChatPage extends React.Component<Props> {
         return (
             <div className="chat-page">
                 <Header {...{ id, photo, firstName }} />
-                <div className="chat-page__main">
-                    <div className="chat-page__message-list">
-                        {!messages.loading &&
-                            messages.allMessages.map(message => (
-                                <Message
-                                    text={message.text}
-                                    authorName={message.author.firstName}
-                                    authorAvatarUrl={message.author.photo}
-                                    createdAt={message.createdAt}
-                                    key={message.id}
-                                    isLoggedInUser={message.author.id === id}
-                                />
-                            ))}
-                        <div ref={this.initRef} />
-                    </div>
-                    <InputControls userId={id} onHeightChange={() => this.endRef.scrollIntoView()} />
+                <div className="chat-page__main" style={{ paddingBottom: this.state.textAreaHeight }}>
+                    {!messages.loading &&
+                        messages.allMessages.map(message => (
+                            <Message
+                                text={message.text}
+                                authorName={message.author.firstName}
+                                authorAvatarUrl={message.author.photo}
+                                createdAt={message.createdAt}
+                                key={message.id}
+                                isLoggedInUser={message.author.id === id}
+                            />
+                        ))}
+                    <div ref={this.initRef} />
+                    <InputControls userId={id} onHeightChange={this.handleHeightChange} />
                 </div>
             </div>
         );

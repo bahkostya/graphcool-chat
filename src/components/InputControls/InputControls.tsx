@@ -8,7 +8,7 @@ import { CreateMessageMutationVariables, CreateMessageMutation } from '../../typ
 
 interface OwnProps {
     userId: string;
-    onHeightChange(): void;
+    onHeightChange(height: number): void;
 }
 
 interface MappedProps {
@@ -22,12 +22,23 @@ class InputControls extends React.Component<Props> {
         text: '',
     };
 
-    handleChange = (e: React.FormEvent<HTMLTextAreaElement>) =>
+    handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
         this.setState({
             text: e.currentTarget.value,
         });
+    };
+
+    handleKeyPress = e => {
+        if (e.keyCode === 13 && !e.shiftKey) {
+            this.handleSubmit();
+        }
+    };
 
     handleSubmit = async () => {
+        if (!this.state.text.trim()) {
+            return;
+        }
+
         await this.props.createMessage({
             variables: {
                 authorId: this.props.userId,
@@ -42,7 +53,7 @@ class InputControls extends React.Component<Props> {
 
     render() {
         return (
-            <div className="input-controls">
+            <div className="input-controls" onKeyDown={this.handleKeyPress}>
                 <Textarea
                     className="input-controls__text-area"
                     minRows={1}
