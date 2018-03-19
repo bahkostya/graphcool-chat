@@ -1,0 +1,8 @@
+query AllUsers {
+    allUsers(orderBy: createdAt_ASC) {
+        id
+        createdAt
+        firstName
+        photo
+    }
+}

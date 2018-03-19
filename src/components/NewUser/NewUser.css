@@ -1,0 +1,21 @@
+.new-user {
+    margin: 16px 0 0;
+    display: flex;
+    justify-content: center;
+}
+
+.new-user__text {
+    padding: 6px 16px;
+    border-radius: 4px;
+    background-color: #ccd4df;
+    font-weight: 700;
+    font-size: 16px;
+    color: rgb(196, 99, 92);
+    border: 2px solid #a6beba;
+}
+
+.new-user__text span {
+    font-weight: 700;
+    font-size: 16px;
+    color: #416176;
+}

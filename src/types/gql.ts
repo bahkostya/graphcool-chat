@@ -14,6 +14,15 @@ export interface AllMessagesQuery {
     }>;
 }
 
+export interface AllUsersQuery {
+    allUsers: Array<{
+        id: string;
+        createdAt: string;
+        firstName: string;
+        photo: string;
+    }>;
+}
+
 export interface AuthenticateUserMutationVariables {
     facebookToken: string;
 }
@@ -63,6 +72,17 @@ export interface MessageSubscription {
                 firstName: string;
                 photo: string;
             };
+        } | null;
+    } | null;
+}
+
+export interface UserSubscription {
+    User: {
+        node: {
+            id: string;
+            createdAt: string;
+            firstName: string;
+            photo: string;
         } | null;
     } | null;
 }

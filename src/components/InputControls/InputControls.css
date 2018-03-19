@@ -9,6 +9,7 @@
     transform: translateX(-50%);
     padding: 0 8px;
     background-color: #e7ebf0;
+    align-items: center;
 }
 
 .input-controls__text-area {
@@ -21,8 +22,8 @@
 }
 
 .input-controls__button {
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
     padding: 4px;
     margin: 8px 0 8px 8px;
     background-color: #5682a3;

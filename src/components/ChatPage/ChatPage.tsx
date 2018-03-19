@@ -8,21 +8,37 @@ import InputControls from '../InputControls/InputControls';
 import Message from '../Message/Message';
 import loggedInUserQuery from '../../graphql/loggedInUserQuery.graphql';
 import allMessagesQuery from '../../graphql/allMessagesQuery.graphql';
+import allUsersQuery from '../../graphql/allUsersQuery.graphql';
 import newMessage from '../../graphql/newMessage.graphql';
-import { LoggedInUserQuery, AllMessagesQuery, MessageSubscription } from '../../types/gql';
+import newUser from '../../graphql/newUser.graphql';
+import {
+    LoggedInUserQuery,
+    AllMessagesQuery,
+    MessageSubscription,
+    AllUsersQuery,
+    UserSubscription,
+} from '../../types/gql';
+import { Message as MessageType, User } from '../../types/api';
 import checkIfLoggedIn from '../../utils/checkIfLoggedIn';
 import './ChatPage.css';
+import NewUser from '../NewUser/NewUser';
 
 interface MappedProps {
     user: QueryProps & LoggedInUserQuery;
     messages: QueryProps & AllMessagesQuery;
+    users: QueryProps & AllUsersQuery;
     subscribeToNewMessages(): void;
+    subscribeToNewUsers(): void;
 }
 
 type Props = MappedProps & RouteComponentProps<{}>;
 
 interface State {
     textAreaHeight: number;
+}
+
+function isMessage(listItem: MessageType | User): listItem is MessageType {
+    return (listItem as MessageType).author !== undefined;
 }
 
 class ChatPage extends React.Component<Props, State> {
@@ -34,6 +50,7 @@ class ChatPage extends React.Component<Props, State> {
 
     componentDidMount() {
         this.props.subscribeToNewMessages();
+        this.props.subscribeToNewUsers();
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -46,7 +63,7 @@ class ChatPage extends React.Component<Props, State> {
 
             if (
                 (user.loggedInUser && lastMessage.author.id === user.loggedInUser.id) ||
-                window.innerHeight + window.scrollY >= this.endRef.offsetTop - 50
+                window.innerHeight + window.scrollY >= this.endRef.offsetTop - 70
             ) {
                 this.endRef.scrollIntoView();
 
@@ -58,7 +75,7 @@ class ChatPage extends React.Component<Props, State> {
     handleHeightChange = (height: number) => {
         this.setState(
             {
-                textAreaHeight: height + 20,
+                textAreaHeight: height + 40,
             },
             () => {
                 this.endRef.scrollIntoView();
@@ -69,9 +86,9 @@ class ChatPage extends React.Component<Props, State> {
     initRef = (el: HTMLDivElement) => (this.endRef = el);
 
     render() {
-        const { messages, user } = this.props;
+        const { messages, user, users } = this.props;
 
-        if (user.loading) {
+        if (user.loading || messages.loading || users.loading) {
             return null;
         }
 
@@ -81,21 +98,29 @@ class ChatPage extends React.Component<Props, State> {
 
         const { id, photo, firstName } = user.loggedInUser!;
 
+        const list = [...messages.allMessages, ...users.allUsers].sort(
+            (a, b) => +new Date(a.createdAt) - +new Date(b.createdAt)
+        ) as (User | MessageType)[];
+
         return (
             <div className="chat-page">
                 <Header {...{ id, photo, firstName }} />
                 <div className="chat-page__main" style={{ paddingBottom: this.state.textAreaHeight }}>
-                    {!messages.loading &&
-                        messages.allMessages.map(message => (
-                            <Message
-                                text={message.text}
-                                authorName={message.author.firstName}
-                                authorAvatarUrl={message.author.photo}
-                                createdAt={message.createdAt}
-                                key={message.id}
-                                isLoggedInUser={message.author.id === id}
-                            />
-                        ))}
+                    {list.map(listItem => {
+                        if (isMessage(listItem)) {
+                            return (
+                                <Message
+                                    text={listItem.text}
+                                    authorName={listItem.author.firstName}
+                                    authorAvatarUrl={listItem.author.photo}
+                                    createdAt={listItem.createdAt}
+                                    key={listItem.id}
+                                    isLoggedInUser={listItem.author.id === id}
+                                />
+                            );
+                        }
+                        return <NewUser key={listItem.id} userName={listItem.firstName} />;
+                    })}
                     <div ref={this.initRef} />
                     <InputControls userId={id} onHeightChange={this.handleHeightChange} />
                 </div>
@@ -110,7 +135,7 @@ export default compose(
         options: { fetchPolicy: 'network-only' },
         name: 'messages',
         props: props => {
-            const { messages, user } = props as Partial<MappedProps>;
+            const { messages } = props as Partial<MappedProps>;
             if (!messages) {
                 return props;
             }
@@ -128,6 +153,35 @@ export default compose(
 
                             return {
                                 allMessages: [...prev.allMessages, subscriptionData.Message!.node],
+                            };
+                        },
+                    });
+                },
+            };
+        },
+    }),
+    graphql(allUsersQuery, {
+        options: { fetchPolicy: 'network-only' },
+        name: 'users',
+        props: props => {
+            const { users } = props as Partial<MappedProps>;
+            if (!users) {
+                return props;
+            }
+
+            return {
+                ...props,
+                subscribeToNewUsers: () => {
+                    return users.subscribeToMore({
+                        document: newUser,
+                        updateQuery: (prev: AllUsersQuery, { subscriptionData: { data } }) => {
+                            if (!data) {
+                                return prev;
+                            }
+                            const subscriptionData = data as UserSubscription;
+
+                            return {
+                                allMessages: [...prev.allUsers, subscriptionData.User!.node],
                             };
                         },
                     });
