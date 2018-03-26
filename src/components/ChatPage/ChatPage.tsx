@@ -55,8 +55,9 @@ class ChatPage extends React.Component<Props, State> {
 
     componentDidUpdate(prevProps: Props) {
         if (
-            prevProps.messages.allMessages &&
-            prevProps.messages.allMessages.length !== this.props.messages.allMessages.length
+            (prevProps.messages.allMessages &&
+                prevProps.messages.allMessages.length !== this.props.messages.allMessages.length) ||
+            (prevProps.users.allUsers && prevProps.users.allUsers.length !== this.props.users.allUsers.length)
         ) {
             const { messages, user } = this.props;
             const lastMessage = messages.allMessages[messages.allMessages.length - 1];
@@ -181,7 +182,7 @@ export default compose(
                             const subscriptionData = data as UserSubscription;
 
                             return {
-                                allMessages: [...prev.allUsers, subscriptionData.User!.node],
+                                allUsers: [...prev.allUsers, subscriptionData.User!.node],
                             };
                         },
                     });

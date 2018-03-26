@@ -5,5 +5,10 @@
 .chat-page__main {
     padding-top: 56px;
     padding-bottom: 52px;
-    min-height: 100vh;
+}
+
+@media (min-width: 801px) {
+    .chat-page__main {
+        min-height: 100vh;
+    }
 }
