@@ -1,0 +1,14 @@
+.chat-page {
+    padding: 0 8px 0;
+    background-color: #e7ebf0;
+}
+.chat-page__main {
+    padding-top: 56px;
+    padding-bottom: 52px;
+}
+
+@media (min-width: 801px) {
+    .chat-page__main {
+        min-height: 100vh;
+    }
+}

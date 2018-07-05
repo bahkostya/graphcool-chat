@@ -21,6 +21,7 @@
         "jsdoc-format": true,
         "jsx-no-lambda": false,
         "jsx-no-multiline-js": false,
+        "jsx-boolean-value": false,
         "label-position": true,
         "max-line-length": [ true, 120 ],
         "member-ordering": [
@@ -32,16 +33,7 @@
         "no-any": true,
         "no-arg": true,
         "no-bitwise": true,
-        "no-console": [
-            true,
-            "log",
-            "error",
-            "debug",
-            "info",
-            "time",
-            "timeEnd",
-            "trace"
-        ],
+        "no-console": false,
         "no-consecutive-blank-lines": true,
         "no-construct": true,
         "no-debugger": true,
@@ -63,7 +55,7 @@
         ],
         "quotemark": [true, "single", "jsx-double"],
         "radix": true,
-        "semicolon": [true, "always"],
+        "semicolon": [true, "always", "ignore-bound-class-methods"],
         "switch-default": true,
 
         "trailing-comma": [false],
@@ -94,6 +86,8 @@
             "check-separator",
             "check-type",
             "check-typecast"
-        ]
+        ],
+        "strict-boolean-expressions": false,
+        "import-name": false
     }
 }

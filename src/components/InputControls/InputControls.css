@@ -1,0 +1,37 @@
+.input-controls {
+    display: flex;
+    align-items: flex-start;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 50%;
+    max-width: 800px;
+    transform: translateX(-50%);
+    padding: 0 8px;
+    background-color: #e7ebf0;
+    align-items: center;
+}
+
+.input-controls__text-area {
+    flex: 1 1 auto;
+    height: 100%;
+    margin: 8px 0 8px;
+    border-radius: 4px;
+    padding: 8px;
+    min-height: 36px;
+}
+
+.input-controls__button {
+    width: 48px;
+    height: 48px;
+    padding: 4px;
+    margin: 8px 0 8px 8px;
+    background-color: #5682a3;
+    border: none;
+    border-radius: 50%;
+    background-image: url('../../assets/send-icon.svg');
+    background-size: 24px 24px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    outline: none;
+}

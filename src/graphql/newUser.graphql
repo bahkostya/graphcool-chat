@@ -1,0 +1,10 @@
+subscription User {
+    User(filter: { mutation_in: [CREATED] }) {
+        node {
+            id
+            createdAt
+            firstName
+            photo
+        }
+    }
+}

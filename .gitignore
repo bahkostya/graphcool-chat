@@ -80,3 +80,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode
+.temp
+.graphcoolrc

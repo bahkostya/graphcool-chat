@@ -1,0 +1,14 @@
+subscription Message {
+    Message(filter: { mutation_in: [CREATED] }) {
+        node {
+            id
+            createdAt
+            text
+            author {
+                id
+                firstName
+                photo
+            }
+        }
+    }
+}

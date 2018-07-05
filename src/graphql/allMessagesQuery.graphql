@@ -1,0 +1,12 @@
+query AllMessages {
+    allMessages(orderBy: createdAt_ASC) {
+        id
+        createdAt
+        text
+        author {
+            id
+            firstName
+            photo
+        }
+    }
+}
